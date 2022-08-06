@@ -4,6 +4,17 @@
 const express = require('express');
 const morgan = require('morgan');
 
+//Testing database connection
+function asyncHandler(cb){
+  return async (req, res, next)=>{
+try {
+  await sequelize.authenticate();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
+  }
+}
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
