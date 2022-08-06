@@ -1,5 +1,5 @@
 'use strict';
-
+//this file configures the Sequelize ORM
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');

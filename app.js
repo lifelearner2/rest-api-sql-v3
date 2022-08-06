@@ -1,10 +1,16 @@
 'use strict';
+//This file is the entry point to the app and the Sequelize models are used to create and retrieve data from the database.
+
+//importing objects from models folder to be initialize them
+//const { sequelize, models } = require('./models');
+//should I be requiring the fsjstd-restapi.db folder instead? I don't have a ./db like the video
 
 // load modules
 const express = require('express');
 const morgan = require('morgan');
 
-//Testing database connection
+//Testing database connection (I looked this up online and then figured out that I needed to wrap it in a asyncHandler)
+//However, the  video does it slightly different - is mine still okay?
 function asyncHandler(cb){
   return async (req, res, next)=>{
 try {
