@@ -4,7 +4,7 @@
 //array created to hold user records once created
 const users = [];
 
-// Adding routes
+// Adding routes - routes defined in this router will only be considered if the route starts with /api path
 app.use('/api', routes);
 
 //Get Users Route | route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
@@ -15,7 +15,8 @@ router.get('/api/users', (req, res) => {
 
   //created a route for creating new users  
   //set the Location header to "/", and return a 201 HTTP status code and no content.
-  router.post('/api/users', (req, res) => {
+  //not sure why the example doesn't have /api path on this one...
+  router.post('/users', (req, res) => {
     // Get the user from the request body.
     const user = req.body;
   
@@ -24,7 +25,7 @@ router.get('/api/users', (req, res) => {
     users.push(user);
   
     // Set the status to 201 Created and end the response.
-    res.status(201).end();
+    return res.status(201).end();
   });
 
   // Get the user from the request body.
@@ -33,10 +34,11 @@ const user = req.body;
 //COURSES ROUTES:
 
 //Get courses Route | route that will return all courses including User associated w/each course - along with a 200 HTTP status code.
-router.get('/api/courses', (req, res) => {
-    res.json(user, courses);
+router.get('/api/courses', asyncHandler(async(req, res) => {
+    const allCourses = await course.findAll();
+    res.json(allCourses);
     res.status(200).end();
-  });
+  }));
 
 //Get route that returns corresponding course incl. User assoc w/course & 200 code
   router.get('/api/courses/:id', (req, res) => {
@@ -49,8 +51,18 @@ router.get('/api/courses', (req, res) => {
 router.post('/api/courses/:id'), (req, res) => {
     res.json(location, courses);
     const course = req.body;
+    try {
+        await course.create({})
+    } catch(err) {
+        if('') {
+
+        } else {
+
+        }
+
+    }
     courses.push(course);
-    res.status(201).end();
+    return res.status(201).end();
 }
 
 //Put route that updates corresponding course and returns a 204 code
@@ -62,6 +74,10 @@ router.put('/api/courses/:id'), (req, res) => {
 
 //Delete route will delete corresponding course and return a 204 code
 router.delete('/api/courses/:id'), (req, res) => {
+    if(course) {
+        await course.destroy();
+    } else {
     res.json(courses);
     res.status(204).end();
+}
 }
