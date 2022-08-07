@@ -72,7 +72,7 @@ router.post('/api/courses/:id'), (req, res) => {
 }
 
 //Put route that updates corresponding course and returns a 204 code
-router.get('/api/courses/:id', asyncHandler(async(req, res, next) => {
+router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     try {
       const course = await Course.findByPk(req.params.id);
       course ? res.render(courses, { course }) : next();
@@ -83,7 +83,7 @@ router.get('/api/courses/:id', asyncHandler(async(req, res, next) => {
   }));
 
 //Delete route will delete corresponding course and return a 204 code
-router.post('/api/courses:id/delete', asyncHandler(async(req, res) => {
+router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
     try {
       await Course.destroy({ where: { id: req.params.id } });
         res.json(courses);
