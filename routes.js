@@ -36,6 +36,9 @@ router.get('/api/users', (req, res) => {
   // Get the user from the request body.
 const user = req.body;
 
+//ADD VALIDATIONS FOR POST ROUTE
+//INCLUDE: firstName, lastName, emailAddress, password
+
 //COURSES ROUTES:
 
 //Get courses Route | route that will return all courses including User associated w/each course - along with a 200 HTTP status code.
@@ -76,6 +79,10 @@ router.post('/api/courses/:id'), (req, res) => {
     return res.status(201).end();
 }
 
+//ADD VALIDATION FOR NEW COURSE POST ROUTE
+//INCLUDE: title, description
+
+
 //Put route that updates corresponding course and returns a 204 code
 router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     try {
@@ -86,6 +93,11 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
       //throw err;
     }
   }));
+
+  //ADD VALIDATION FOR PUT ROUTE
+  //INCLUDE: title, description
+
+  //error code for 400 if validation fails
 
 //Delete route will delete corresponding course and return a 204 code
 router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
