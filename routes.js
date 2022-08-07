@@ -75,7 +75,7 @@ router.post('/api/courses/:id'), (req, res) => {
 router.get('/api/courses/:id', asyncHandler(async(req, res, next) => {
     try {
       const course = await Course.findByPk(req.params.id);
-      course ? res.render(courses { course }) : next();
+      course ? res.render(courses, { course }) : next();
       res.status(204).end();
     } catch(err) {
       //throw err;
@@ -88,7 +88,7 @@ router.post('/api/courses:id/delete', asyncHandler(async(req, res) => {
       await Course.destroy({ where: { id: req.params.id } });
         res.json(courses);
     } catch(err) {
-      throw err;
+      //throw err;
       res.status(204).end();
     }
 }
