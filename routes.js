@@ -48,6 +48,7 @@ router.get('/api/courses', (req, res) => {
 //Post route that creates new course, sets location header to URI for new course & returns a 201 code
 router.post('/api/courses/:id'), (req, res) => {
     res.json(location, courses);
+    const course = req.body;
     courses.push(course);
     res.status(201).end();
 }
