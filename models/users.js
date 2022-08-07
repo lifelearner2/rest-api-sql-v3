@@ -1,8 +1,46 @@
-//This file contains Sequellize models for the app
+//This file contains Sequelize models for the app
 
-// The User model should include the following attributes set to the correct data type:
-// firstName (String)
-// lastName (String)
-// emailAddress (String)
-// password (String)
-// Pro Tip: When defining models for an existing database the model names and attributes need to match the tables in the database exactly otherwise Sequelize will throw an error.
+//Define Model Association & setting attributes
+//adding a one-to-many association between the User and Course models using the hasMany() method.
+'use strict';
+const Sequelize = require('sequelize');
+
+module.exports = (sequelize) => {
+  class User extends Sequelize.Model {}
+  User.init({
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    emailAddress: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+  }, { sequelize });
+
+  User.associate = (models) => {
+    // Adding associations - with one, or many, courses.
+    User.associate = (models) => {
+        User.hasMany(models.Course, {
+            foreignKey: {
+                fieldName: 'userId',
+            },
+        });
+        };
+        };
+
+  return User;
+};

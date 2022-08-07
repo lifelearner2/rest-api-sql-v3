@@ -16,6 +16,10 @@ function asyncHandler(cb){
 try {
   await sequelize.authenticate();
   console.log('Connection has been established successfully.');
+ // Sync the models
+ console.log('Synchronizing the models with the database...');
+ await sequelize.sync({ force: true });
+
 } catch (error) {
   console.error('Unable to connect to the database:', error);
 }
