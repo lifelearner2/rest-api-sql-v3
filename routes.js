@@ -72,18 +72,24 @@ router.post('/api/courses/:id'), (req, res) => {
 }
 
 //Put route that updates corresponding course and returns a 204 code
-router.put('/api/courses/:id'), (req, res) => {
-    res.json(courses);
-    res.status(204).end();
-}
-
+router.get('/api/courses/:id', asyncHandler(async(req, res, next) => {
+    try {
+      const course = await Course.findByPk(req.params.id);
+      course ? res.render(courses { course }) : next();
+      res.status(204).end();
+    } catch(err) {
+      //throw err;
+    }
+  }));
 
 //Delete route will delete corresponding course and return a 204 code
-router.delete('/api/courses/:id'), (req, res) => {
-    if(course) {
-        await course.destroy();
-    } else {
-    res.json(courses);
-    res.status(204).end();
+router.post('/api/courses:id/delete', asyncHandler(async(req, res) => {
+    try {
+      await Course.destroy({ where: { id: req.params.id } });
+        res.json(courses);
+    } catch(err) {
+      throw err;
+      res.status(204).end();
+    }
 }
-}
+  ));
