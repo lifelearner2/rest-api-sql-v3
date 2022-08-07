@@ -6,7 +6,7 @@
 //should I be requiring the fsjstd-restapi.db folder instead? I don't have a ./db like the video
 
 // Get references to our models. Declaring and initializing variables to the models.
-const { User, Course } = models;
+//const { User, Course } = models; //giving errors that models is not defined
 
 // load modules
 const express = require('express');
