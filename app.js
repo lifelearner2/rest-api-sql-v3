@@ -5,6 +5,9 @@
 //const { sequelize, models } = require('./models');
 //should I be requiring the fsjstd-restapi.db folder instead? I don't have a ./db like the video
 
+// Get references to our models. Declaring and initializing variables to the models.
+const { User, Course } = models;
+
 // load modules
 const express = require('express');
 const morgan = require('morgan');

@@ -38,6 +38,7 @@ Course.associate = (models) => {
     // Adding associations - with one to one association between Course and User models using the belongsTo() method.
     //This is telling Sequelize that a course can be associated with only one user.
         Course.belongsTo(models.User, {
+        as: 'student', // alias
         foreignKey: {
          fieldName: 'userId',
          allowNull: false,
