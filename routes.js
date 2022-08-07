@@ -35,7 +35,13 @@ const user = req.body;
 
 //Get courses Route | route that will return all courses including User associated w/each course - along with a 200 HTTP status code.
 router.get('/api/courses', asyncHandler(async(req, res) => {
-    const allCourses = await course.findAll();
+    const allCourses = await course.findAll({
+        include: [
+            {
+                model: user,
+            },
+        ],
+    })()
     res.json(allCourses);
     res.status(200).end();
   }));
