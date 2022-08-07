@@ -44,6 +44,9 @@ app.get('/', (req, res) => {
   });
 });
 
+// Adding routes - routes defined in this router will only be considered if the route starts with /api path
+//app.use('/api', routes);
+
 // send 404 if no other route matched
 app.use((req, res) => {
   res.status(404).json({

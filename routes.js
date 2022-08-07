@@ -1,11 +1,16 @@
 //this file defines the application's routes
+'use strict'
+
+const express = require('express');
+const { courses, users } = require('./models');
 
 //USER ROUTES:
 //array created to hold user records once created
 const users = [];
 
 // Adding routes - routes defined in this router will only be considered if the route starts with /api path
-app.use('/api', routes);
+//app.use('/api', routes);
+router.use('/api', routes);
 
 //Get Users Route | route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 router.get('/api/users', (req, res) => {
@@ -93,3 +98,5 @@ router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
     }
 }
   ));
+
+  module.exports = router;
