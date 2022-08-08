@@ -113,11 +113,11 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     }
  //ADD VALIDATION FOR PUT ROUTE
   //INCLUDE: title, description
-  if (!user.title) {
+  if (!course.title) {
     errors.push('Please provide a value for "title" ');
     }
   
-  if (!user.description) {
+  if (!course.description) {
     errors.push('Please provide a value for "description" ');
     }
 
@@ -125,9 +125,11 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
   if (errors.length > 0) {
     // Return the validation errors to the client.
     res.status(400).json({ errors });
-  } 
+  }  else {
+    // Add the course to the `courses` array.
+    courses.push(course);
 
-  }));
+  };
 
  
 
