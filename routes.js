@@ -2,6 +2,7 @@
 'use strict'
 
 const express = require('express');
+const bcrypt = require('bcrypt');
 const { courses, users } = require('./models');
 
 //USER ROUTES:
@@ -38,8 +39,14 @@ router.get('/api/users', (req, res) => {
       if (!user.emailAddress) {
         errors.push('Please provide a value for "email"');
       }
-      if (!user.password) {
+    // Validate that we have a `password` value.
+    let password = user.password;
+      if (!password) {
         errors.push('Please provide a value for "password"');
+      }  else if (password.length < 8 || password.length > 20) {
+        errors.push('Your password should be between 8 and 20 characters');
+      } else {
+        user.password = bcrypt.hashSync(user.password, 10);
       }
 
       if (errors.length > 0) {

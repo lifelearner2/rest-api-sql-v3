@@ -1,8 +1,10 @@
 'use strict';
 //This file is the entry point to the app and the Sequelize models are used to create and retrieve data from the database.
 
+//const models = ''
+
 //importing objects from models folder to be initialize them
-//const { sequelize, models } = require('./models');
+const { sequelize, models } = require('./models');
 //should I be requiring the fsjstd-restapi.db folder instead? I don't have a ./db like the video
 
 // Get references to our models. Declaring and initializing variables to the models.
@@ -45,7 +47,7 @@ app.get('/', (req, res) => {
 });
 
 // Adding routes - routes defined in this router will only be considered if the route starts with /api path
-//app.use('/api', routes);
+//app.use('/api', routes); //getting error that routes is not defined
 
 // send 404 if no other route matched
 app.use((req, res) => {
