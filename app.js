@@ -1,8 +1,12 @@
 'use strict';
 //This file is the entry point to the app and the Sequelize models are used to create and retrieve data from the database.
 //This file also creates and configures the Express application
-
+const express = require("express");
+const port = 5000;
 //const models = ''
+
+//middleware set up
+app.set("view engine", "express");
 
 //importing objects from models folder to be initialize them
 const { sequelize, models } = require('./models');
@@ -76,3 +80,5 @@ app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express server is listening on port ${server.address().port}`);
 });
+
+module.exports = app;

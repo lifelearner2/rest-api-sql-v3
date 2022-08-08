@@ -2,6 +2,7 @@
 'use strict'
 
 const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Course, User } = require('./models');
 const { authenticateUser } = require('./middleware/auth-user');
@@ -18,6 +19,7 @@ function asyncHandler(cb) {
             await cb(req, res, next);
         } catch (error) {
             res.status(500).send(error);
+            next(error);
         }
     }
 }
