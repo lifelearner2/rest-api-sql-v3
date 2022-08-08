@@ -39,7 +39,7 @@ router.get('/api/users', (req, res) => {
         errors.push('Please provide a value for "email"');
       }
       if (!user.password) {
-        errors.push('Please provide a value for "email"');
+        errors.push('Please provide a value for "password"');
       }
 
       // Set the status to 201 Created and end the response.
@@ -53,7 +53,8 @@ router.get('/api/users', (req, res) => {
   });
 
 //COURSES ROUTES:
-
+//array created to hold courses once created
+const courses = [];
 //Get courses Route | route that will return all courses including User associated w/each course - along with a 200 HTTP status code.
 router.get('/api/courses', asyncHandler(async(req, res) => {
     const allCourses = await course.findAll({
@@ -101,7 +102,6 @@ router.post('/api/courses/:id'), (req, res) => {
     return res.status(201).end();
 }
 
-
 //Put route that updates corresponding course and returns a 204 code
 router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     try {
@@ -111,6 +111,7 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     } catch(err) {
       //throw err;
     }
+
  //ADD VALIDATION FOR PUT ROUTE
   //INCLUDE: title, description
   if (!course.title) {
@@ -128,10 +129,7 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
   }  else {
     // Add the course to the `courses` array.
     courses.push(course);
-
   };
-
- 
 
 //Delete route will delete corresponding course and return a 204 code
 router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
@@ -144,5 +142,5 @@ router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
     }
 }
   ));
-
+}));
   module.exports = router;
