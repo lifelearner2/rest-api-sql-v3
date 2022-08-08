@@ -19,15 +19,15 @@ exports.authenticateUser = async (req, res, next) => {
         .compareSync(credentials.pass, user.confirmedPassword);
         // If the passwords match...compareSync() returns true, or false if they don't
         if (authenticated) { 
-
+            console.log(`Authentication successful for username: ${user.username}`);
+            // Store the user on the Request object. - adding currentUser to req obj & setting it to authenticated user.
+            req.currentUser = user;
         }
     }
 }
   next();
 };
  
-
-  
 
   // If user authentication failed...
      // Return a response with a 401 Unauthorized HTTP status code.
