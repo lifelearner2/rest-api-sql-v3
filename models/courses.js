@@ -1,49 +1,53 @@
-//This file contains Sequelize models for the app
-
-//Define Model Association
-//adding a one-to-one association between the Course and User models using the belongsTo() method.
-
 'use strict';
-const Sequelize = require('sequelize');
-
-module.exports = (sequelize) => {
-  class Course extends Sequelize.Model {}
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Course extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      this.belongsTo(models.User, {
+        foreignKey: {
+          fieldName: 'userId',
+          allowNull: false,
+        }
+      });
+    }
+  }
   Course.init({
     title: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'A title is required'
+        },
+        notEmpty: {
+          msg: 'Please provide a title'
+        }
+      }
     },
     description: {
-      type: Sequelize.TEXT,
+      type: DataTypes.TEXT,
       allowNull: false,
-    },
-    estimatedTime: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    materialsNeeded: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      //userID - create in model associations w/foreignKey property and equal it to id from Users table
-    userID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-  }, { sequelize });
-
-
-Course.associate = (models) => {
-    // Adding associations - with one to one association between Course and User models using the belongsTo() method.
-    //This is telling Sequelize that a course can be associated with only one user.
-        Course.belongsTo(models.User, {
-        as: 'student', // alias
-        foreignKey: {
-         fieldName: 'userId',
-         allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'A description is required'
         },
-        });
-    };
+        notEmpty: {
+          msg: 'Please provide a description'
+        }
+      }
+    },
+    estimatedTime: DataTypes.STRING,
+    materialsNeeded: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Course',
+  });
   return Course;
 };

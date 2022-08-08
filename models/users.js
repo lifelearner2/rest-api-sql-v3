@@ -1,93 +1,84 @@
-//This file contains Sequelize models for the app
-
-//importing bcrypt module
-//const { Model, DataTypes } = require('sequelize');
-//const bcrypt = require('bcrypt');
-
-//Define Model Association & setting attributes
-//adding a one-to-many association between the User and Course models using the hasMany() method.
 'use strict';
-const Sequelize = require('sequelize');
+const bcrypt = require('bcryptjs');
 
-//allowNull set to false ensures that the fields below require an entry
-module.exports = (sequelize) => {
-  class User extends Sequelize.Model {}
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      this.hasMany(models.Course, {
+        foreignKey: {
+          fieldName: 'userId',
+          allowNull: false,
+        }
+      });
+    }
+  }
   User.init({
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     firstName: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-          notNull: {
-              msg: 'A name is required'
-          },
-          notEmpty: {
-              msg: 'Please provide a name'
-          }
-      }
-    },
-    lastName: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
-            msg: 'A name is required'
+          msg: 'A first name is required'
         },
         notEmpty: {
-            msg: 'Please provide a name'
+          msg: 'Please provide a first name'
         }
-    }
+      }
     },
-    // |added unique constraint to ensure that the provided email isn't already associated with an existing user.|
-    emailAddress: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: {
-            msg: 'The email you entered already exists'
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'A last name is required'
         },
-        validate: {
-            notNull: {
-                msg: 'An email is required'
-            },
-            isEmail: {
-                msg: 'Please provide a valid email address'
-            }
+        notEmpty: {
+          msg: 'Please provide a last name'
         }
+      }
+    },
+    emailAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        msg: 'The email address you entered already exists'
       },
-      // |set a range for the length of the password to be between 8-20 characters|
+      validate: {
+        notNull: {
+          msg: 'An email address is required'
+        },
+        notEmpty: {
+          msg: 'Please provide an email address'
+        }
+      }
+    },
     password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'A password is required'
-            },
-            notEmpty: {
-                msg: 'Please provide a password'
-            },
-            len: {
-                args: [8, 20],
-                msg: 'The password should be between 8 and 20 characters in length'
-            }
-        }
+      type: DataTypes.STRING,
+      allowNull: false,
+      set(val) {
+        const hashedPassword = bcrypt.hashSync(val, 10);
+        this.setDataValue('password', hashedPassword);
       },
-  }, { sequelize });
-
-  User.associate = (models) => {
-    // Adding associations - with one, or many, courses.
-    User.associate = (models) => {
-        User.hasMany(models.Course, {
-            as: 'class', // alias
-            foreignKey: {
-                fieldName: 'userId',
-            },
-        });
-        };
-        };
-
+      validate: {
+        notNull: {
+          msg: 'A password is required'
+        },
+        notEmpty: {
+          msg: 'Please provide a password'
+        }
+      }
+    },
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
   return User;
 };
