@@ -5,6 +5,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 
+//allowNull set to false ensures that the fields below require an entry
 module.exports = (sequelize) => {
   class User extends Sequelize.Model {}
   User.init({

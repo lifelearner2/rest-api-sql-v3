@@ -4,10 +4,22 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { courses, users } = require('./models');
+const { UnknownConstraintError } = require('sequelize/types');
 
 //USER ROUTES:
 //array created to hold user records once created
 const users = [];
+
+//Handler function to wrap each route
+function asyncHandler(cb) {
+    return async (req, res, next) => {
+        try {
+            await cb(req, res, next);
+        } catch (error) {
+            res.status(500).send(error);
+        }
+    }
+}
 
 // Adding routes - routes defined in this router will only be considered if the route starts with /api path
 //app.use('/api', routes);
@@ -23,11 +35,22 @@ router.get('/api/users', (req, res) => {
  //POST /api/users route creates a new user account
   //set the Location header to "/", and return a 201 HTTP status code and no content.
   //not sure why the example doesn't have /api path on this one...
-  router.post('/users', (req, res) => {
+  router.post('/users', asyncHandler(async(req, res) => {
     // Get the user from the request body.
     const user = req.body;
     const errors = [];
-
+    try {
+        await user.create(req.body);
+        res.status(201).json({ "message": "Account successfully created!"})
+    } catch (error) {
+        console.log('ERROR: ', error.name);
+        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+          const errors = error.errors.map(err => err.message);
+          res.status(400).json({ errors });
+        } else {
+            throw error;
+        }
+    }
 //ADD VALIDATIONS FOR POST ROUTE
 //INCLUDE: firstName, lastName, emailAddress, password
     if (!user.firstName) {
@@ -58,7 +81,7 @@ router.get('/api/users', (req, res) => {
     // Set the status to 201 Created and end the response.
     res.status(201).end();
     }
-  });
+  }));
 
 //COURSES ROUTES:
 //array created to hold courses once created
