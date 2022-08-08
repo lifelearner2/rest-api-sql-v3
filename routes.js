@@ -26,10 +26,11 @@ function asyncHandler(cb) {
 router.use('/api', routes);
 
 //Get Users Route | route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
-router.get('/api/users', (req, res) => {
+router.get('/api/users', asyncHandler(async (req, res) => {
+    let users = await User.findAll();
     res.json(users);
     res.status(200).end();
-  });
+  }));
 
   
  //POST /api/users route creates a new user account
