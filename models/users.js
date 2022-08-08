@@ -38,6 +38,7 @@ module.exports = (sequelize) => {
         }
     }
     },
+    // |added unique constraint to ensure that the provided email isn't already associated with an existing user.|
     emailAddress: {
         type: Sequelize.STRING,
         allowNull: false,
