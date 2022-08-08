@@ -122,7 +122,10 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     }
 
   //error code for 400 if validation fails
-  res.status(400).end();
+  if (errors.length > 0) {
+    // Return the validation errors to the client.
+    res.status(400).json({ errors });
+  } 
 
   }));
 
