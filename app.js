@@ -1,5 +1,6 @@
 'use strict';
 //This file is the entry point to the app and the Sequelize models are used to create and retrieve data from the database.
+//This file also creates and configures the Express application
 
 //const models = ''
 
