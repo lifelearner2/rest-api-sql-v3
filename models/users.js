@@ -1,5 +1,9 @@
 //This file contains Sequelize models for the app
 
+//importing bcrypt module
+//const { Model, DataTypes } = require('sequelize');
+//const bcrypt = require('bcrypt');
+
 //Define Model Association & setting attributes
 //adding a one-to-many association between the User and Course models using the hasMany() method.
 'use strict';
