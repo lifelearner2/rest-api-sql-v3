@@ -18,7 +18,8 @@ router.get('/api/users', (req, res) => {
     res.status(200).end();
   });
 
-  //created a route for creating new users  
+  
+ //POST /api/users route creates a new user account
   //set the Location header to "/", and return a 201 HTTP status code and no content.
   //not sure why the example doesn't have /api path on this one...
   router.post('/users', (req, res) => {
@@ -43,30 +44,13 @@ router.get('/api/users', (req, res) => {
 
       // Set the status to 201 Created and end the response.
       res.status(201).end();
-
-
-  
-    //POST /api/users route creates a new user account
-   
   
     // The `user.name` property isn't defined or is set to `undefined`, `null`, or an empty string
       users.push(user);
     // Set the status to 201 Created and end the response.
     res.status(201).end();
 
-
-
-
-
-
   });
-
-
-
-
-
-
-
 
 //COURSES ROUTES:
 
@@ -104,12 +88,18 @@ router.post('/api/courses/:id'), (req, res) => {
         }
 
     }
+//ADD VALIDATION FOR NEW COURSE POST ROUTE
+//INCLUDE: title, description
+    if (!user.title) {
+    errors.push('Please provide a value for "title" ');
+    }
+    if (!user.description) {
+        errors.push('Please provide a value for "description" ');
+        }
+
     courses.push(course);
     return res.status(201).end();
 }
-
-//ADD VALIDATION FOR NEW COURSE POST ROUTE
-//INCLUDE: title, description
 
 
 //Put route that updates corresponding course and returns a 204 code
@@ -121,12 +111,22 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     } catch(err) {
       //throw err;
     }
-  }));
-
-  //ADD VALIDATION FOR PUT ROUTE
+ //ADD VALIDATION FOR PUT ROUTE
   //INCLUDE: title, description
+  if (!user.title) {
+    errors.push('Please provide a value for "title" ');
+    }
+  
+  if (!user.description) {
+    errors.push('Please provide a value for "description" ');
+    }
 
   //error code for 400 if validation fails
+  res.status(400).end();
+
+  }));
+
+ 
 
 //Delete route will delete corresponding course and return a 204 code
 router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
