@@ -24,20 +24,49 @@ router.get('/api/users', (req, res) => {
   router.post('/users', (req, res) => {
     // Get the user from the request body.
     const user = req.body;
-  
-    //POST /api/users route creates a new user account
-    // Add the user to the `users` array.
-    users.push(user);
-  
-    // Set the status to 201 Created and end the response.
-    return res.status(201).end();
-  });
-
-  // Get the user from the request body.
-const user = req.body;
+    const errors = [];
 
 //ADD VALIDATIONS FOR POST ROUTE
 //INCLUDE: firstName, lastName, emailAddress, password
+    if (!user.firstName) {
+    errors.push('Please provide a value for "first name" ');
+    }
+    if (!user.lastName) {
+        errors.push('Please provide a value for " last name"');
+      }
+      if (!user.emailAddress) {
+        errors.push('Please provide a value for "email"');
+      }
+      if (!user.password) {
+        errors.push('Please provide a value for "email"');
+      }
+
+      // Set the status to 201 Created and end the response.
+      res.status(201).end();
+
+
+  
+    //POST /api/users route creates a new user account
+   
+  
+    // The `user.name` property isn't defined or is set to `undefined`, `null`, or an empty string
+      users.push(user);
+    // Set the status to 201 Created and end the response.
+    res.status(201).end();
+
+
+
+
+
+
+  });
+
+
+
+
+
+
+
 
 //COURSES ROUTES:
 
