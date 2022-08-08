@@ -6,7 +6,7 @@ const port = 5000;
 //const models = ''
 
 //middleware set up
-app.set("view engine", "express");
+//app.set("view engine", "express");
 
 //importing objects from models folder to be initialize them
 const { sequelize, models } = require('./models');
@@ -16,7 +16,7 @@ const { sequelize, models } = require('./models');
 //const { User, Course } = models; //giving errors that models is not defined
 
 // load modules
-const express = require('express');
+//const express = require('express');
 const morgan = require('morgan');
 
 //Testing database connection (I looked this up online and then figured out that I needed to wrap it in a asyncHandler)
