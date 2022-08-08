@@ -3,7 +3,8 @@
 
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { courses, users } = require('./models');
+const { Course, User } = require('./models');
+const { authenticateUser } = require('./middleware/auth-user');
 const { UnknownConstraintError } = require('sequelize/types');
 
 //USER ROUTES:
@@ -26,17 +27,18 @@ function asyncHandler(cb) {
 router.use('/api', routes);
 
 //Get Users Route | route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
-router.get('/api/users', asyncHandler(async (req, res) => {
+// should it be /api/users or just /users?
+router.get('/api/users', authenticateUser, asyncHandler(async (req, res) => {
+    const user = req.currentUser;
     let users = await User.findAll();
-    res.json(users);
+
+    res.json({
+        name: user.name,
+        username: user.username
+      });
+    //res.json(users);
     res.status(200).end();
   }));
-
-  //custom middleware function to authenticate user credentials from Authorization header on request
-  //if authentication is successful, add user account to request object and continue processing request.
-  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
-
-
 
 
  //POST /api/users route creates a new user account
@@ -115,7 +117,7 @@ router.get('/api/courses', asyncHandler(async(req, res) => {
 });
 
 //Post route that creates new course, sets location header to URI for new course & returns a 201 code
-router.post('/api/courses/:id'), (req, res) => {
+router.post('/api/courses/:id',  authenticateCourse), (req, res) => {
     res.json(location, courses);
     const course = req.body;
     try {
@@ -141,14 +143,8 @@ router.post('/api/courses/:id'), (req, res) => {
     return res.status(201).end();
 }
 
- //custom middleware function to authenticate user credentials from Authorization header on request
-  //if authentication is successful, add user account to request object and continue processing request.
-  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
-
-
-
 //Put route that updates corresponding course and returns a 204 code
-router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
+router.put('/api/courses/:id', authenticateCourse, asyncHandler(async(req, res, next) => {
     try {
       const course = await Course.findByPk(req.params.id);
       course ? res.render(courses, { course }) : next();
@@ -167,13 +163,6 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     errors.push('Please provide a value for "description" ');
     }
 
- //custom middleware function to authenticate user credentials from Authorization header on request
-  //if authentication is successful, add user account to request object and continue processing request.
-  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
-
-
-
-
   //error code for 400 if validation fails
   if (errors.length > 0) {
     // Return the validation errors to the client.
@@ -184,7 +173,7 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
   };
 
 //Delete route will delete corresponding course and return a 204 code
-router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
+router.delete('/api/courses:id/delete', authenticateUser, asyncHandler(async(req, res) => {
     try {
       await Course.destroy({ where: { id: req.params.id } });
         res.json(courses);
@@ -192,13 +181,6 @@ router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
       //throw err;
       res.status(204).end();
     }
-
- //custom middleware function to authenticate user credentials from Authorization header on request
-  //if authentication is successful, add user account to request object and continue processing request.
-  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
-
-
-
 }
   ));
 }));

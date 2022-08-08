@@ -19,6 +19,7 @@ exports.authenticateUser = async (req, res, next) => {
         // Use the bcrypt npm package to compare the user's password
         .compareSync(credentials.pass, user.confirmedPassword);
         // If the passwords match...compareSync() returns true, or false if they don't
+        //if authentication is successful, add user account to request object and continue processing request.
         if (authenticated) { 
             console.log(`Authentication successful for username: ${user.username}`);
             // Store the user on the Request object. - adding currentUser to req obj & setting it to authenticated user.
@@ -29,7 +30,7 @@ exports.authenticateUser = async (req, res, next) => {
         }  else {
             message = 'Auth header not found';
         }
-        // If user authentication failed...Return a response with a 401 Unauthorized HTTP status code.
+        // If user authentication failed...Return a response with a 401 Unauthorized HTTP status code & generic "Access Denied" message..
         if (message) {
             console.warn(message);
             res.status(401).json({ message: 'Access Denied' });
@@ -41,7 +42,7 @@ exports.authenticateUser = async (req, res, next) => {
         }
     };
 
-  
+module.exports = auth-user;
 
 
 
