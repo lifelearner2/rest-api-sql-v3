@@ -51,7 +51,7 @@ router.get('/api/users', asyncHandler(async (req, res) => {
         res.status(201).json({ "message": "Account successfully created!"})
     } catch (error) {
         console.log('ERROR: ', error.name);
-        //below ensures that info submitted will be "unique" and not already submitted to database
+        // |below ensures that info submitted will be "unique" and not already submitted to database|
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
           const errors = error.errors.map(err => err.message);
           res.status(400).json({ errors });
