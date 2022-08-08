@@ -1,48 +1,14 @@
-'use strict';
-//This file is the entry point to the app and the Sequelize models are used to create and retrieve data from the database.
-//This file also creates and configures the Express application
-const express = require("express");
-const port = 5000;
-//const models = ''
-
-//middleware set up
-//app.set("view engine", "express");
-
-//importing objects from models folder to be initialize them
-const { sequelize, models } = require('./models');
-//should I be requiring the fsjstd-restapi.db folder instead? I don't have a ./db like the video
-
-// Get references to our models. Declaring and initializing variables to the models.
-//const { User, Course } = models; //giving errors that models is not defined
-
 // load modules
-//const express = require('express');
-const morgan = require('morgan');
+const express = require('express');
+const Sequelize = require('./models/index.js').sequelize;
+const routes = require('./routes.js');
 
-//Testing database connection (I looked this up online and then figured out that I needed to wrap it in a asyncHandler)
-//However, the  video does it slightly different - is mine still okay?
-function asyncHandler(cb){
-  return async (req, res, next)=>{
-try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
- // Sync the models
- console.log('Synchronizing the models with the database...');
- await sequelize.sync({ force: true });
-
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-  }
-}
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
 // create the Express app
 const app = express();
-
-// setup morgan which gives us http request logging
-app.use(morgan('dev'));
+app.use(express.json());
 
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
@@ -51,8 +17,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// Adding routes - routes defined in this router will only be considered if the route starts with /api path
-//app.use('/api', routes); //getting error that routes is not defined
+// sets up all routes to start with /api
+app.use('/api', routes);
 
 // send 404 if no other route matched
 app.use((req, res) => {
@@ -76,9 +42,16 @@ app.use((err, req, res, next) => {
 // set our port
 app.set('port', process.env.PORT || 5000);
 
-// start listening on our port
-const server = app.listen(app.get('port'), () => {
-  console.log(`Express server is listening on port ${server.address().port}`);
-});
-
-module.exports = app;
+// Sequelize model synchronization, then start listening on our port.
+(async () => {
+  try {
+    await Sequelize.sync();
+    await Sequelize.authenticate();
+    console.log('Connection to the database successful!');
+    const server = await app.listen(app.get('port'), () => {
+      console.log(`Express server is listening on port ${server.address().port}`);
+    });
+  } catch (error) {
+    console.error('Error connecting to the database: ', error);
+  } 
+})();
