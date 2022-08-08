@@ -42,14 +42,15 @@ router.get('/api/users', (req, res) => {
         errors.push('Please provide a value for "password"');
       }
 
-      // Set the status to 201 Created and end the response.
-      res.status(201).end();
-  
+      if (errors.length > 0) {
+        // Return the validation errors to the client.
+        res.status(400).json({ errors });
+      } else {
     // The `user.name` property isn't defined or is set to `undefined`, `null`, or an empty string
       users.push(user);
     // Set the status to 201 Created and end the response.
     res.status(201).end();
-
+    }
   });
 
 //COURSES ROUTES:
