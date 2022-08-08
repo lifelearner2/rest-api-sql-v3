@@ -32,7 +32,13 @@ router.get('/api/users', asyncHandler(async (req, res) => {
     res.status(200).end();
   }));
 
-  
+  //custom middleware function to authenticate user credentials from Authorization header on request
+  //if authentication is successful, add user account to request object and continue processing request.
+  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
+
+
+
+
  //POST /api/users route creates a new user account
   //set the Location header to "/", and return a 201 HTTP status code and no content.
   //not sure why the example doesn't have /api path on this one...
@@ -45,6 +51,7 @@ router.get('/api/users', asyncHandler(async (req, res) => {
         res.status(201).json({ "message": "Account successfully created!"})
     } catch (error) {
         console.log('ERROR: ', error.name);
+        //below ensures that info submitted will be "unique" and not already submitted to database
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
           const errors = error.errors.map(err => err.message);
           res.status(400).json({ errors });
@@ -134,6 +141,12 @@ router.post('/api/courses/:id'), (req, res) => {
     return res.status(201).end();
 }
 
+ //custom middleware function to authenticate user credentials from Authorization header on request
+  //if authentication is successful, add user account to request object and continue processing request.
+  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
+
+
+
 //Put route that updates corresponding course and returns a 204 code
 router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     try {
@@ -154,6 +167,13 @@ router.put('/api/courses/:id', asyncHandler(async(req, res, next) => {
     errors.push('Please provide a value for "description" ');
     }
 
+ //custom middleware function to authenticate user credentials from Authorization header on request
+  //if authentication is successful, add user account to request object and continue processing request.
+  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
+
+
+
+
   //error code for 400 if validation fails
   if (errors.length > 0) {
     // Return the validation errors to the client.
@@ -172,6 +192,13 @@ router.delete('/api/courses:id/delete', asyncHandler(async(req, res) => {
       //throw err;
       res.status(204).end();
     }
+
+ //custom middleware function to authenticate user credentials from Authorization header on request
+  //if authentication is successful, add user account to request object and continue processing request.
+  //if it fails - return a 401 HTTP status code & generic "Access Denied" message.
+
+
+
 }
   ));
 }));
